@@ -3,7 +3,6 @@
    1. Menu mobile
    2. Penanda nav aktif saat scroll
    3. Animasi muncul saat scroll
-   4. Toast & validasi form contact
    ========================================================================== */
 
 /* ---------- 1. Menu mobile ---------- */
@@ -83,42 +82,3 @@ if ('IntersectionObserver' in window && !reduceMotion) {
   revealItems.forEach((item) => item.classList.add('is-visible'));
 }
 
-/* ---------- 4. Toast & form contact ---------- */
-const toast = document.getElementById('toast');
-let toastTimer;
-
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add('is-visible');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 3200);
-}
-
-const form = document.getElementById('contact-form');
-const status = form.querySelector('.contact-form__status');
-
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-
-  const data = new FormData(form);
-  const name = String(data.get('name') || '').trim();
-  const email = String(data.get('email') || '').trim();
-  const message = String(data.get('message') || '').trim();
-
-  if (!name || !email || !message) {
-    status.textContent = 'Lengkapi semua kolom dulu ya.';
-    status.classList.add('is-error');
-    return;
-  }
-
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    status.textContent = 'Format email belum benar. Coba lagi.';
-    status.classList.add('is-error');
-    return;
-  }
-
-  status.classList.remove('is-error');
-  status.textContent = `Terima kasih, ${name}! Pesan diterima (mode demo).`;
-  form.reset();
-  showToast('Pesan tersimpan di demo — belum dikirim ke server.');
-});
